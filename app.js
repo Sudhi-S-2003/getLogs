@@ -12,7 +12,8 @@ app.use(cors());
 // Environment Configuration
 dotenv.config();
 const port = process.env.PORT || 5000;
-app.use('/', router)
+app.post('/', router)
+
 // Database Connection and Server Initialization
 dbConnection()
   .then(() => {
