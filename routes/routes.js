@@ -1,8 +1,8 @@
 const express = require("express");
 const router =express.Router();
-const reconStatus=require('../controllers/reconStatusController')
+const ValidatorController=require('../controllers/ValidatorController')
 
-router.post('/',reconStatus)
+router.post('/',ValidatorController)
 
 
 
