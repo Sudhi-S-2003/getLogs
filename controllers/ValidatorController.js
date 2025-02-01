@@ -7,7 +7,9 @@ let transaction_ids = [];
 const ValidatorController = async (req, res) => {
   try {
     const { context, message } = req.body;
-    const baseUrl = "https://ondc-seller-preprod.chattybao.com/ondc/bpp";
+    const baseUrl = req.body.bpp_uri
+    const baseUriId = req.body.bpp_id
+
     const subUrl = req.body.context.action;
 
     const data = {
@@ -22,9 +24,10 @@ const ValidatorController = async (req, res) => {
     };
 
     if (context.action !== "search") {
-      data.context.bpp_id =  "ondc-seller-preprod.chattybao.com/ondc"      ;
-      data.context.bpp_uri =
-      "https://ondc-seller-preprod.chattybao.com/ondc/bpp";
+      data.context.bpp_id = baseUriId;
+      data.context.bpp_uri = baseUrl;
+    }
+    if (context.action === "search") {
       data.context.transaction_id = uuidv4();
     }
 
@@ -37,7 +40,7 @@ const ValidatorController = async (req, res) => {
     // data.context.transaction_id="f451e1aa-a45d-498d-b42f-8bd9f520dc21";
     const authorizationHeader = await createAuthorizationHeader(data);
     console.log(JSON.stringify(data))
-    const response = await axios.post(`${baseUrl}/${subUrl}`, data,{
+    const response = await axios.post(`${baseUrl}/${subUrl}`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: authorizationHeader,
